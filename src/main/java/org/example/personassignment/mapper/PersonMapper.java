@@ -17,13 +17,16 @@ public class PersonMapper {
     }
 
     public Person toEntity(PersonRequestDTO personRequestDTO) {
-        Person parent1 = personRepository.findById(personRequestDTO.parent1Id())
-                .orElseThrow(() -> new RuntimeException("Parent 1 not found"));
-        Person parent2 = personRepository.findById(personRequestDTO.parent2Id())
-                .orElseThrow(() -> new RuntimeException("Parent 2 not found"));
+        Person parent1 = personRequestDTO.parent1Id() != null
+                ? personRepository.findById(personRequestDTO.parent1Id()).orElseThrow(() -> new RuntimeException("Parent1 not found"))
+                : personRepository.findById(Person.EMPTY_PARENT_1_ID).orElseThrow(() -> new RuntimeException("Empty Parent1 not found"));
+
+        Person parent2 = personRequestDTO.parent2Id() != null
+                ? personRepository.findById(personRequestDTO.parent2Id()).orElseThrow(() -> new RuntimeException("Parent2 not found"))
+                : personRepository.findById(Person.EMPTY_PARENT_2_ID).orElseThrow(() -> new RuntimeException("Empty Parent2 not found"));
+
         Person partner = personRequestDTO.partnerId() != null
-                ? personRepository.findById(personRequestDTO.partnerId())
-                .orElseThrow(() -> new RuntimeException("Partner not found"))
+                ? personRepository.findById(personRequestDTO.partnerId()).orElseThrow(() -> new RuntimeException("Partner not found"))
                 : null;
 
         Person person = new Person();
@@ -32,6 +35,7 @@ public class PersonMapper {
         person.setParent1(parent1);
         person.setParent2(parent2);
         person.setPartner(partner);
+
         return person;
     }
 
@@ -40,11 +44,10 @@ public class PersonMapper {
                 person.getId(),
                 person.getName(),
                 person.getBirthDate(),
-                person.getParent1().getId(),
-                person.getParent2().getId(),
+                person.getParent1() != null ? person.getParent1().getId() : null,
+                person.getParent2() != null ? person.getParent2().getId() : null,
                 person.getPartner() != null ? person.getPartner().getId() : null,
                 person.getChildren().stream().map(Person::getId).collect(Collectors.toList())
         );
     }
-
 }

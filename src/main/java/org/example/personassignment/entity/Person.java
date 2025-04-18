@@ -1,7 +1,6 @@
 package org.example.personassignment.entity;
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -9,16 +8,18 @@ import java.util.List;
 
 @Entity
 public class Person {
-    @jakarta.persistence.Id
+    public static final long EMPTY_PARENT_1_ID = 999991L;
+    public static final long EMPTY_PARENT_2_ID = 999992L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private LocalDate birthDate;
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "parent1_id")
     private Person parent1;
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "parent2_id")
     private Person parent2;
     @OneToMany(mappedBy = "parent1", cascade = CascadeType.ALL)
@@ -26,6 +27,11 @@ public class Person {
     @OneToOne
     @JoinColumn(name = "partner_id")
     private Person partner;
+
+    public boolean isRoot() {
+        return (parent1 == null || parent1.getId() == EMPTY_PARENT_1_ID) &&
+                (parent2 == null || parent2.getId() == EMPTY_PARENT_2_ID);
+    }
 
     public Long getId() {
         return id;
