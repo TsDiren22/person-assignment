@@ -7,9 +7,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDate;
+import java.util.logging.Logger;
 
 @Configuration
 public class RootPersonInitializer {
+
+    private static final java.util.logging.Logger LOGGER = Logger.getLogger(RootPersonInitializer.class.getName());
 
     @Bean
     public CommandLineRunner insertRootPersons(JdbcTemplate jdbcTemplate) {
@@ -35,8 +38,7 @@ public class RootPersonInitializer {
                     );
                 }
             } catch (Exception e) {
-                System.err.println("Error inserting root persons: " + e.getMessage());
-                e.printStackTrace();
+                LOGGER.severe(String.format("Error inserting root persons: %s", e.getMessage()));
             }
         };
     }
