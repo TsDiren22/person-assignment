@@ -3,12 +3,19 @@ package org.example.personassignment.mapper;
 import org.example.personassignment.dto.PersonRequestDTO;
 import org.example.personassignment.dto.PersonResponseDTO;
 import org.example.personassignment.entity.Person;
+import org.example.personassignment.repository.PersonRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
 @Component
 public class PersonMapper {
+    private final PersonRepository personRepository;
+
+    public PersonMapper(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
+
     public Person toEntity(PersonRequestDTO personRequestDTO) {
         Person parent1 = personRepository.findById(personRequestDTO.parent1Id())
                 .orElseThrow(() -> new RuntimeException("Parent 1 not found"));
