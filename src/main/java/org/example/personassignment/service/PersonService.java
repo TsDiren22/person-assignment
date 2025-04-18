@@ -9,7 +9,6 @@ import org.example.personassignment.repository.PersonRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class PersonService {
@@ -32,7 +31,6 @@ public class PersonService {
 
     public List<PersonResponseDTO> getAllPersons() {
         return personRepository.findAll().stream()
-                .map(personMapper::toDto)
-                .collect(Collectors.toList());
+                .map(personMapper::toDto).toList();
     }
 }
