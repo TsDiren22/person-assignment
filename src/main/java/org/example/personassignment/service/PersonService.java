@@ -33,4 +33,16 @@ public class PersonService {
         return personRepository.findAll().stream()
                 .map(personMapper::toDto).toList();
     }
+
+    @Transactional
+    public PersonResponseDTO updatePerson(Long id, PersonRequestDTO personRequestDTO) {
+        Person person = personRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Person not found"));
+
+        personMapper.updateEntity(personRequestDTO, person);
+
+        Person updatedPerson = personRepository.save(person);
+
+        return personMapper.toDto(updatedPerson);
+    }
 }

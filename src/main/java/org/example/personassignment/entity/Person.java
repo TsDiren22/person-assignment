@@ -3,8 +3,6 @@ package org.example.personassignment.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 public class Person {
@@ -22,8 +20,6 @@ public class Person {
     @ManyToOne
     @JoinColumn(name = "parent2_id")
     private Person parent2;
-    @OneToMany(mappedBy = "parent1", cascade = CascadeType.ALL)
-    private List<Person> children = new ArrayList<>();
     @OneToOne
     @JoinColumn(name = "partner_id")
     private Person partner;
@@ -71,14 +67,6 @@ public class Person {
 
     public void setParent2(Person parent2) {
         this.parent2 = parent2;
-    }
-
-    public List<Person> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<Person> children) {
-        this.children = children;
     }
 
     public Person getPartner() {

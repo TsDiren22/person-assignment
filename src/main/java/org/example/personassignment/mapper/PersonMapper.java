@@ -6,8 +6,6 @@ import org.example.personassignment.entity.Person;
 import org.example.personassignment.repository.PersonRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.stream.Collectors;
-
 @Component
 public class PersonMapper {
     private final PersonRepository personRepository;
@@ -17,24 +15,11 @@ public class PersonMapper {
     }
 
     public Person toEntity(PersonRequestDTO personRequestDTO) {
-        Person parent1 = personRequestDTO.parent1Id() != null
-                ? personRepository.findById(personRequestDTO.parent1Id()).orElseThrow(() -> new RuntimeException("Parent1 not found"))
-                : personRepository.findById(Person.EMPTY_PARENT_1_ID).orElseThrow(() -> new RuntimeException("Empty Parent1 not found"));
-
-        Person parent2 = personRequestDTO.parent2Id() != null
-                ? personRepository.findById(personRequestDTO.parent2Id()).orElseThrow(() -> new RuntimeException("Parent2 not found"))
-                : personRepository.findById(Person.EMPTY_PARENT_2_ID).orElseThrow(() -> new RuntimeException("Empty Parent2 not found"));
-
-        Person partner = personRequestDTO.partnerId() != null
-                ? personRepository.findById(personRequestDTO.partnerId()).orElseThrow(() -> new RuntimeException("Partner not found"))
-                : null;
-
         Person person = new Person();
         person.setName(personRequestDTO.name());
         person.setBirthDate(personRequestDTO.birthDate());
-        person.setParent1(parent1);
-        person.setParent2(parent2);
-        person.setPartner(partner);
+
+        setRelationships(personRequestDTO, person);
 
         return person;
     }
@@ -46,8 +31,32 @@ public class PersonMapper {
                 person.getBirthDate(),
                 person.getParent1() != null ? person.getParent1().getId() : null,
                 person.getParent2() != null ? person.getParent2().getId() : null,
-                person.getPartner() != null ? person.getPartner().getId() : null,
-                person.getChildren().stream().map(Person::getId).collect(Collectors.toList())
+                person.getPartner() != null ? person.getPartner().getId() : null
         );
+    }
+
+    public void updateEntity(PersonRequestDTO personRequestDTO, Person person) {
+        person.setName(personRequestDTO.name());
+        person.setBirthDate(personRequestDTO.birthDate());
+
+        setRelationships(personRequestDTO, person);
+    }
+
+    private void setRelationships(PersonRequestDTO personRequestDTO, Person person) {
+        person.setParent1(findParent(personRequestDTO.parent1Id(), Person.EMPTY_PARENT_1_ID, "Parent1"));
+        person.setParent2(findParent(personRequestDTO.parent2Id(), Person.EMPTY_PARENT_2_ID, "Parent2"));
+        person.setPartner(findPartner(personRequestDTO.partnerId()));
+    }
+
+    private Person findParent(Long parentId, Long emptyParentId, String parentType) {
+        return parentId != null
+                ? personRepository.findById(parentId).orElseThrow(() -> new RuntimeException(parentType + " not found"))
+                : personRepository.findById(emptyParentId).orElseThrow(() -> new RuntimeException("Empty " + parentType + " not found"));
+    }
+
+    private Person findPartner(Long partnerId) {
+        return partnerId != null
+                ? personRepository.findById(partnerId).orElseThrow(() -> new RuntimeException("Partner not found"))
+                : null;
     }
 }
