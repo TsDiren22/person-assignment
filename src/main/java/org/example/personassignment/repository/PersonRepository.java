@@ -1,4 +1,10 @@
 package org.example.personassignment.repository;
 
-public class PersonRepository {
+import org.example.personassignment.entity.Person;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface PersonRepository extends JpaRepository<Person, Long> {
+
 }
