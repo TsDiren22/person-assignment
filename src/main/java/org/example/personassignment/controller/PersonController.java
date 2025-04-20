@@ -42,4 +42,12 @@ public class PersonController {
         PersonResponseDTO responseDTO = personService.updatePerson(id, personRequestDTO);
         return ResponseEntity.ok(responseDTO);
     }
+
+    @GetMapping("/partner-and-three-children-one-underage")
+    public ResponseEntity<String> getPersonsWithPartnerAndThreeChildren() {
+        String base64EncodedCsv = personService.getPersonsWithPartnerAndThreeChildrenWithOneUnderageAsBase64Csv();
+        return ResponseEntity.ok()
+                .contentType(org.springframework.http.MediaType.TEXT_PLAIN)
+                .body(base64EncodedCsv);
+    }
 }

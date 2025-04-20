@@ -6,9 +6,15 @@ import org.example.personassignment.dto.PersonResponseDTO;
 import org.example.personassignment.entity.Person;
 import org.example.personassignment.mapper.PersonMapper;
 import org.example.personassignment.repository.PersonRepository;
+import org.example.personassignment.utility.CsvUtils;
+import org.example.personassignment.utility.PersonFilterUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.List;
+
+import static java.util.Locale.filter;
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class PersonService {
@@ -52,5 +58,21 @@ public class PersonService {
                 .orElseThrow(() -> new RuntimeException("Person not found"));
 
         personRepository.delete(person);
+    }
+
+    public String getPersonsWithPartnerAndThreeChildrenWithOneUnderageAsBase64Csv() {
+        List<Person> filteredPersons = getPersonsWithPartnerAndThreeChildren();
+        String csvContent = CsvUtils.personsToCsv(filteredPersons);
+        return CsvUtils.encodeToBase64(csvContent);
+    }
+
+    public List<Person> getPersonsWithPartnerAndThreeChildren() {
+        List<Person> allPersons = personRepository.findAll();
+
+        return allPersons.stream()
+                .filter(PersonFilterUtils::hasPartner)
+                .filter(person -> PersonFilterUtils.hasThreeChildrenWithPartner(person, allPersons))
+                .filter(person -> PersonFilterUtils.hasAtLeastOneChildUnder18(person, allPersons))
+                .toList();
     }
 }

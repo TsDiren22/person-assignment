@@ -4,6 +4,7 @@ import org.example.personassignment.entity.Person;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ public class RootPersonInitializer {
     private static final java.util.logging.Logger LOGGER = Logger.getLogger(RootPersonInitializer.class.getName());
 
     @Bean
+    @Order(1)
     public CommandLineRunner insertRootPersons(JdbcTemplate jdbcTemplate) {
         return args -> {
             try {
