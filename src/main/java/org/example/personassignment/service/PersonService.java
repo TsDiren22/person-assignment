@@ -10,11 +10,7 @@ import org.example.personassignment.utility.CsvUtils;
 import org.example.personassignment.utility.PersonFilterUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Base64;
 import java.util.List;
-
-import static java.util.Locale.filter;
-import static java.util.stream.Collectors.toList;
 
 @Service
 public class PersonService {
@@ -75,4 +71,18 @@ public class PersonService {
                 .filter(person -> PersonFilterUtils.hasOneChildUnder18(person, allPersons))
                 .toList();
     }
+
+    public List<PersonResponseDTO> getAllPersonsSortedByName() {
+        return personRepository.findAllByOrderByNameAsc().stream()
+                .map(personMapper::toDto)
+                .toList();
+    }
+
+    public List<PersonResponseDTO> getAllPersonsSortedById() {
+        return personRepository.findAllByOrderByIdAsc().stream()
+                .map(personMapper::toDto)
+                .toList();
+    }
+
+
 }

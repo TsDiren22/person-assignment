@@ -20,9 +20,15 @@ public class PersonController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PersonResponseDTO>> getAllPersons() {
-        List<PersonResponseDTO> persons = personService.getAllPersons();
-        return ResponseEntity.ok(persons);
+    public ResponseEntity<List<PersonResponseDTO>> getAllPersons(
+            @RequestParam(required = false) String sortBy) {
+
+        if ("name".equals(sortBy)) {
+            return ResponseEntity.ok(personService.getAllPersonsSortedByName());
+        } else if ("id".equals(sortBy)) {
+            return ResponseEntity.ok(personService.getAllPersonsSortedById());
+        }
+        return ResponseEntity.ok(personService.getAllPersons());
     }
 
     @PostMapping
