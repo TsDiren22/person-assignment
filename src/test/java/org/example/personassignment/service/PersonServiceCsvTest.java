@@ -1,8 +1,7 @@
-package org.example.personassignment;
+package org.example.personassignment.service;
 
 import org.example.personassignment.entity.Person;
 import org.example.personassignment.repository.PersonRepository;
-import org.example.personassignment.service.PersonService;
 import org.example.personassignment.utility.CsvUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

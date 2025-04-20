@@ -31,7 +31,7 @@ public class CsvUtils {
         return Base64.getEncoder().encodeToString(content.getBytes());
     }
 
-    private static String escapeSpecialCharacters(String value) {
+    static String escapeSpecialCharacters(String value) {
         if (value == null) {
             return "";
         }

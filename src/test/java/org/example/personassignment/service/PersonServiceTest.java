@@ -1,11 +1,10 @@
-package org.example.personassignment;
+package org.example.personassignment.service;
 
 import org.example.personassignment.dto.PersonRequestDTO;
 import org.example.personassignment.dto.PersonResponseDTO;
 import org.example.personassignment.entity.Person;
 import org.example.personassignment.mapper.PersonMapper;
 import org.example.personassignment.repository.PersonRepository;
-import org.example.personassignment.service.PersonService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
