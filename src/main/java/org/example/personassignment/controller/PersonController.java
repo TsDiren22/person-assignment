@@ -31,6 +31,12 @@ public class PersonController {
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePerson(@PathVariable Long id) {
+        personService.deletePerson(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<PersonResponseDTO> updatePerson(@PathVariable Long id, @Valid @RequestBody PersonRequestDTO personRequestDTO) {
         PersonResponseDTO responseDTO = personService.updatePerson(id, personRequestDTO);

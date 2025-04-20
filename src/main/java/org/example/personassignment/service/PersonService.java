@@ -45,4 +45,12 @@ public class PersonService {
 
         return personMapper.toDto(updatedPerson);
     }
+
+    @Transactional
+    public void deletePerson(Long id) {
+        Person person = personRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Person not found"));
+
+        personRepository.delete(person);
+    }
 }
