@@ -72,7 +72,7 @@ public class PersonService {
         return allPersons.stream()
                 .filter(PersonFilterUtils::hasPartner)
                 .filter(person -> PersonFilterUtils.hasThreeChildrenWithPartner(person, allPersons))
-                .filter(person -> PersonFilterUtils.hasAtLeastOneChildUnder18(person, allPersons))
+                .filter(person -> PersonFilterUtils.hasOneChildUnder18(person, allPersons))
                 .toList();
     }
 }

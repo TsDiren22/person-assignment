@@ -35,7 +35,7 @@ public class PersonFilterUtils {
                         (child.getParent1().getId().equals(parent2.getId()) && child.getParent2().getId().equals(parent1.getId())));
     }
 
-    public static boolean hasAtLeastOneChildUnder18(Person person, List<Person> allPersons) {
+    public static boolean hasOneChildUnder18(Person person, List<Person> allPersons) {
         if (person.getPartner() == null) {
             return false;
         }
@@ -43,9 +43,12 @@ public class PersonFilterUtils {
         Person partner = person.getPartner();
         LocalDate today = LocalDate.now();
 
-        return allPersons.stream()
+        long childrenUnder18Count = allPersons.stream()
                 .filter(p -> hasParents(p, person, partner))
-                .anyMatch(p -> isUnder18(p.getBirthDate(), today));
+                .filter(p -> isUnder18(p.getBirthDate(), today))
+                .count();
+
+        return childrenUnder18Count == 1;
     }
 
     public static boolean isUnder18(LocalDate birthDate, LocalDate referenceDate) {

@@ -35,7 +35,7 @@ public class MockDataInitializer {
                 setPartners(john, mary, personRepository);
 
                 Person emma = createPerson("Emma Smith", LocalDate.of(2005, 3, 10), personRepository);
-                Person lucas = createPerson("Lucas Smith", LocalDate.of(2008, 7, 5), personRepository);
+                Person lucas = createPerson("Lucas Smith", LocalDate.of(2001, 7, 5), personRepository);
                 Person lily = createPerson("Lily Smith", LocalDate.of(2018, 11, 28), personRepository);
 
                 setParents(emma, john, mary, personRepository);
